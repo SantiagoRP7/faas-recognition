@@ -1,4 +1,3 @@
 numpy==1.18.5
 tf-hub-nightly
 tfds-nightly
-tensorflow
