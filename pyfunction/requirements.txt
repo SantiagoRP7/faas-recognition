@@ -1,2 +1,3 @@
 matplotlib
 tf-hub-nightly
+tfds-nightly
