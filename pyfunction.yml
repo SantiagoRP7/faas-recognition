@@ -6,5 +6,5 @@ functions:
   pyfunction:
     lang: python3-debian
     handler: ./pyfunction
-    image: andresma/pyfunction:latest
+    image: santiagorp7/recognition:latest
 
