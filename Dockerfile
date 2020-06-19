@@ -6,7 +6,7 @@ ADD https://github.com/alexellis/faas/releases/download/0.5.5-alpha/fwatchdog /u
 RUN chmod +x /usr/bin/fwatchdog
 
 
-COPY . .
+COPY index.py
 
 
 
