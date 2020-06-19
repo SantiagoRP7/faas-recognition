@@ -6,9 +6,9 @@ ADD https://github.com/alexellis/faas/releases/download/0.5.5-alpha/fwatchdog /u
 RUN chmod +x /usr/bin/fwatchdog
 
 
-COPY index.py           .
+COPY index.py index.py
 
-COPY pyfunction           pyfunction
+COPY pyfunction pyfunction
 
 RUN touch ./pyfunction/__init__.py
 
