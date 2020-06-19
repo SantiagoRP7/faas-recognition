@@ -1,4 +1,5 @@
 matplotlib
+tensorflow
 tf-hub-nightly
 tfds-nightly
 numpy
