@@ -4,7 +4,7 @@ provider:
   gateway: http://localhost:8080
 functions:
   pyfunction:
-    lang: python
+    lang: python3-debian
     handler: ./pyfunction
     image: santiagorp7/recognition:latest
 
