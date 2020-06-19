@@ -31,7 +31,7 @@ RUN mkdir -p function
 RUN touch ./function/__init__.py
 
 WORKDIR /home/app/function/
-COPY function/requirements.txt	.
+COPY pyfunction/requirements.txt	.
 
 RUN pip install -r requirements.txt --target=/home/app/python
 
@@ -40,7 +40,7 @@ WORKDIR /home/app/
 
 USER root
 
-COPY function           function
+COPY pyfunction           function
 
 # Allow any user-id for OpenShift users.
 RUN chown -R app:app ./ && \
