@@ -10,10 +10,10 @@ COPY index.py           .
 
 COPY pyfunction           pyfunction
 
-RUN touch ./function/__init__.py
+RUN touch ./pyfunction/__init__.py
 
-WORKDIR /root/function/
-COPY function/requirements.txt	.
+WORKDIR /root/pyfunction/
+COPY pyfunction/requirements.txt	.
 RUN pip install -r requirements.txt
 
 WORKDIR /root/
