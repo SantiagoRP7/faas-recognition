@@ -10,8 +10,6 @@ COPY . /app
 
 
 
-RUN touch ./pyfunction/__init__.py
-
 WORKDIR /root/pyfunction/
 COPY pyfunction/requirements.txt	.
 RUN pip install -r requirements.txt
