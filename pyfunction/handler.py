@@ -1,28 +1,69 @@
+
+import random
+import matplotlib.pylab as plt
+
+import tensorflow as tf
 import numpy as np
-import pandas as pd
-import requests
-import io
+import PIL.Image as Image
+
+#!pip install -U tf-hub-nightly
+#!pip install tfds-nightly
+import tensorflow_hub as hub
+
+from tensorflow.keras import layers
 
 def handle(req):
-	url = 'https://www.datos.gov.co/api/views/gt2j-8ykr/rows.csv?accessType=DOWNLOAD'
-	
-	try:
-	  print("Descargando los datos")
-	  urlData = requests.get(url).content
-	
-	except:
-	  print("Hubo un error, intentelo de nuevo")
-	  return
-	
-	df = pd.read_csv(io.StringIO(urlData.decode('utf-8')), usecols=['Departamento o Distrito ', 'Ciudad de ubicación', 'atención', 'Edad', 'Tipo'])
-	df = df.rename(columns = {'Departamento o Distrito ':'Departamento', 'Ciudad de ubicación':'Ciudad'})
-	df = df.loc[ df.Departamento == 'Valle del Cauca' ]
-	
-	print("\nCasos de COVID-19 en el Valle del Cauca")
-	print(df.groupby('Ciudad').Ciudad.count())
-	
-	print("\nDe los cuales en Cali son del tipo...")
-	df = df.loc[ df.Ciudad == 'Cali' ]
-	print(df.groupby('Tipo').Tipo.count())
-	
-	return 
+	classifier_url ="https://tfhub.dev/google/tf2-preview/mobilenet_v2/classification/2" #@param {type:"string"}
+
+	if req.find("http") == -1:
+		print("Give me a URL of a picture and I'll recognize it for you.")
+		return
+
+	IMAGE_SHAPE = (224, 224)
+
+	classifier = tf.keras.Sequential([
+		hub.KerasLayer(classifier_url, input_shape=IMAGE_SHAPE+(3,))
+	])
+
+	"""### Run it on a single image
+
+	Download a single image to try the model on.
+	"""
+
+
+
+	grace_hopper = tf.keras.utils.get_file(random.randrange(1000)+'ram.jpg', req)
+	grace_hopper = Image.open(grace_hopper).resize(IMAGE_SHAPE)
+	grace_hopper
+
+	grace_hopper = np.array(grace_hopper)/255.0
+	grace_hopper.shape
+
+	"""Add a batch dimension, and pass the image to the model."""
+
+	result = classifier.predict(grace_hopper[np.newaxis, ...])
+	result.shape
+
+	"""The result is a 1001 element vector of logits, rating the probability of each class for the image.
+
+	So the top class ID can be found with argmax:
+	"""
+
+	predicted_class = np.argmax(result[0], axis=-1)
+	predicted_class
+
+	"""### Decode the predictions
+
+	We have the predicted class ID,
+	Fetch the `ImageNet` labels, and decode the predictions
+	"""
+
+	labels_path = tf.keras.utils.get_file('ImageNetLabels.txt','https://storage.googleapis.com/download.tensorflow.org/data/ImageNetLabels.txt')
+	imagenet_labels = np.array(open(labels_path).read().splitlines())
+
+	plt.imshow(grace_hopper)
+	plt.axis('off')
+	predicted_class_name = imagenet_labels[predicted_class]
+	_ = plt.title("Prediction: " + predicted_class_name.title())
+
+	return
