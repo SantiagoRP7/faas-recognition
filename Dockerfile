@@ -8,7 +8,7 @@ RUN chmod +x /usr/bin/fwatchdog
 
 COPY . .
 
-COPY pyfunction pyfunction
+
 
 RUN touch ./pyfunction/__init__.py
 
