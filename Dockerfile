@@ -1,4 +1,4 @@
-FROM tensorflow/tensorflow
+FROM FROM python:3-slim
 
 ADD https://github.com/alexellis/faas/releases/download/0.5.5-alpha/fwatchdog /usr/bin
 
